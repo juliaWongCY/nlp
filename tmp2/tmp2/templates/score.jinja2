@@ -1,0 +1,123 @@
+{% extends "basic.jinja2" %}
+
+{% block title %}
+    Score
+{% endblock title %}
+
+{% block content %}
+    <style>
+        .dropdown-menu {
+            min-width: 200px;
+        }
+
+        .invisible-input {
+            visibility: hidden;
+        }
+
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            filter: alpha(opacity=50);
+            -moz-opacity: 0.5;
+            -khtml-opacity: 0.5;
+            opacity: 0.5;
+            z-index: 10000;
+        }
+    </style>
+    <div class="container">
+        <br/>
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-1">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="nlpdd"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            NLP
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <input type="checkbox" checked="checked" value="pos" id="pos">Stop Words<br/>
+                            <input type="checkbox" checked="checked" value="lemma" id="lemma">Lemmatisation<br/>
+                            <input type="checkbox" checked="checked" value="bag" id="bag">Bag of words</br>
+                            <input type="checkbox" checked="checked" value="vader" id="vader">Sentiment Analysis
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="dropdown">
+                        <button class="btn btn-info dropdown-toggle" type="button" id="mldd"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            ML
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <input name="mlGroup" type="radio" checked="" value="random">Random Forest<br/>
+                            <input name="mlGroup" type="radio" value="d_tree">Decision Tree<br/>
+                            <input name="mlGroup" type="radio" value="svm">Support Vector Machine<br/>
+                            <input name="mlGroup" type="radio" value="log_reg">Logistic Regression<br/>
+                            <input name="mlGroup" type="radio" value="k">K-Nearest Neighbours<br/>
+                            <input name="mlGroup" type="radio" value="naive">Naive Bayes<br/>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1">
+                    <div class="pred_option">
+                        <button class="btn btn-dark" type="button" id="save_option">
+                            Save
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link active" data-toggle="tab" href="#spred">Single Prediction</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" data-toggle="tab" href="#bpred">Batch Prediction</a>
+            </li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="spred" class="tab-pane fade active show">
+                <div class="row featurette">
+                    <div class="col-md-7">
+                        <h3 class="featurette-heading" for="comment">Input Review</h3>
+                        <textarea class="form-control" rows="6" id="comment"
+                                  style="min-height:3em"></textarea>
+                        <label class="form-check-label">
+                            <input type="checkbox" class="form-check-input" id="delivery">Is the delivery on time?
+                        </label><br/>
+                        <label for="deliveryday">Delivery Day: (e.g. Monday)</label>
+                        <input type="text" class="form-control" id="deliveryday">
+                        <label for="region">Region: (e.g. 1)</label>
+                        <input type="text" class="form-control" id="region">
+                        <br/>
+                        <button type="button" class="btn btn-primary" id="predict">Predict</button>
+                    </div>
+                    <div class="col-md-5" style="padding-top: 3em">
+                        <p>
+                            <span class="text-muted">Predicted Class:</span>
+                            <span class="label-default result" id="result"
+                                  style="font-size: 300%; padding-left: 1em">{{ class }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div id="bpred" class="tab-pane fade">
+                <h3 class="featurette-heading" for="comment">Upload Reviews</h3>
+                <div class="form-group">
+                    <form action="" method="post" enctype="multipart/form-data">
+                        <label class="form-control" for="excel" id="file_upload">Choose an excel file</label>
+                        <input class="invisible-input" id="excel" name="excel" type="file" value=""/><br/>
+                        <button class="btn btn-primary" type="submit" value="submit" id="submit"/>
+                        Submit
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript" src="{{ request.static_url('tmp2:static/scripts/score.js') }}"></script>
+{% endblock content %}

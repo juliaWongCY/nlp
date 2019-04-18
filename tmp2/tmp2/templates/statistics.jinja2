@@ -1,0 +1,160 @@
+{% extends "basic.jinja2" %}
+
+{% block title %}
+    Statistics
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="container">
+                <br/>
+                <div class="col-md-12">
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_neu"> Neutral score
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_neg"> Negative score
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_pos"> Positive score
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_compound"> Compound
+                            score
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_bow"> Bag of words
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_ontime"> Delivered on time
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_day"> Delivery day
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline">
+                        <label class="form-check-label">
+                            <input class="form-check-input" type="checkbox" checked="checked" id="c_region"> Region
+                        </label>
+                    </div>
+
+                    <div class="form-check form-check-inline disabled">
+                        <label>
+                            <button type="button" class="btn btn-info" id="refresh">Re-train</button>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {# Statistic Cards #}
+        <div class="row">
+            <div class="container-fluid">
+                <div class="card-deck m-5">
+                    <div class="card border-info">
+                        <div class="card-header">Decisions Tree</div>
+                        <div class="card-body text-info">
+                            <h4 class="card-title">Accuracy</h4>
+                            <h1><span class="font-normal stat" id="dtree_a">{{ dtree_a }}</span></h1>
+                            <h4 class="card-title">F1 Score</h4>
+                            <h1><span class="font-normal stat" id="dtree_f">{{ dtree_f }}</span></h1>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ time_stamp }}</small>
+                        </div>
+                    </div>
+
+                    <div class="card border-info">
+                        <div class="card-header">Support Vector Machine</div>
+                        <div class="card-body text-info">
+                            <h4 class="card-title">Accuracy</h4>
+                            <h1><span class="font-normal stat" id="svm_a">{{ svm_a }}</span></h1>
+                            <h4 class="card-title">F1 Score</h4>
+                            <h1><span class="font-normal stat" id="svm_f">{{ svm_f }}</span></h1>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ time_stamp }}</small>
+                        </div>
+                    </div>
+
+                    <div class="card border-info">
+                        <div class="card-header">Logistic Regression</div>
+                        <div class="card-body text-info">
+                            <h4 class="card-title">Accuracy</h4>
+                            <h1><span class="font-normal stat" id="log_reg_a">{{ log_reg_a }}</span></h1>
+                            <h4 class="card-title">F1 Score</h4>
+                            <h1><span class="font-normal stat" id="log_reg_f">{{ log_reg_f }}</span></h1>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ time_stamp }}</small>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card-deck m-5">
+                    <div class="card border-info">
+                        <div class="card-header">k-Nearest Neighbour</div>
+                        <div class="card-body text-info">
+                            <h4 class="card-title">Accuracy</h4>
+                            <h1><span class="font-normal stat" id="k_a">{{ k_a }}</span></h1>
+                            <h4 class="card-title">F1 Score</h4>
+                            <h1><span class="font-normal stat" id="k_f">{{ k_f }}</span></h1>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ time_stamp }}</small>
+                        </div>
+                    </div>
+
+                    <div class="card border-info">
+                        <div class="card-header">Random Forest</div>
+                        <div class="card-body text-info">
+                            <h4 class="card-title">Accuracy</h4>
+                            <h1><span class="font-normal stat" id="rf_a">{{ rf_a }}</span></h1>
+                            <h4 class="card-title">F1 Score</h4>
+                            <h1><span class="font-normal stat" id="rf_f">{{ rf_f }}</span></h1>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ time_stamp }}</small>
+                        </div>
+                    </div>
+
+                    <div class="card border-info">
+                        <div class="card-header">Naive Bayes</div>
+                        <div class="card-body text-info">
+                            <h4 class="card-title">Accuracy</h4>
+                            <h1><span class="font-normal stat" id="nb_a">{{ nb_a }}</span></h1>
+                            <h4 class="card-title">F1 Score</h4>
+                            <h1><span class="font-normal stat" id="nb_f">{{ nb_f }}</span></h1>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Last updated: {{ time_stamp }}</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="application/javascript" src="{{ request.static_url('tmp2:static/scripts/statistics.js') }}"></script>
+{% endblock content %}

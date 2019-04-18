@@ -1,0 +1,18 @@
+FROM python:latest
+
+# Install NLTK Data first
+RUN pip3 install -U pip
+RUN pip3 install nltk
+RUN python3 -m nltk.downloader all
+
+WORKDIR /app
+
+# Only add the pyramid project files into the work dir
+ADD ./tmp2 /app
+
+# Install the rest of the dependencies
+RUN pip3 install -e .
+
+EXPOSE 6543
+
+CMD pserve production.ini

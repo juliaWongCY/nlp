@@ -1,0 +1,3 @@
+[run]
+source = tmp2
+omit = tmp2/test*

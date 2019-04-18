@@ -1,0 +1,22 @@
+{% extends "basic.jinja2" %}
+
+{% block style %}
+    <link href="{{ request.static_url('tmp2:static/home.css') }}" rel="stylesheet">
+{% endblock style %}
+
+{% block title %}
+    Home
+{% endblock title %}
+
+{% block content %}
+    <div class="container-fluid site-wrapper">
+        <div class="wrapper">
+            <h1 class="display-3">¿Guess What?</h1>
+            <p class="lead text-muted">Guess What is a tool to predict your impression in your customers' mind.</p>
+            <p class="lead text-muted">
+                We use NLP and ML Techniques to predict the NPS categories.<br/>
+                Provided services: customized prediction, statistics analysis and detail analysis on each ML techniques.
+            </p>
+        </div>
+    </div>
+{% endblock content %}

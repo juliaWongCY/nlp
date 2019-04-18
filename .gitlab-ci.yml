@@ -1,0 +1,32 @@
+stages:
+    - test
+    - deploy
+
+all_tests:
+    stage: test
+    image: python:latest
+    tags:
+        - python3
+        - pip3
+    script:
+        - pip3 install -U pip
+        - pip3 install nltk
+        - python3 -m nltk.downloader all
+        - pip3 install -e "tmp2[testing]"
+        - cd tmp2 && py.test
+
+# Deployment uses a shell runner which is different from the above
+# jobs that uses the docker as the executor.
+deployment:
+    image: docker:latest
+    stage: deploy
+    script:
+        - ./scripts/cleanup.sh
+        - docker build -f Dockerfile.linux -t nlp_backend .
+        - docker run -d -p 6543:6543 --name nlp_backend nlp_backend
+    only:
+        - master
+    tags:
+        - shell-deploy
+    environment:
+        name: production
